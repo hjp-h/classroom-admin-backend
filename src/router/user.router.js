@@ -5,6 +5,7 @@ const {
   backgroundImage,
   findUserById,
   getUserList,
+  geAllUserList,
   deleteUser,
   updateUser,
   getUserByRoleId
@@ -20,6 +21,8 @@ const userRouter = new Router({prefix: '/users'});
 
 // 获取所有用户的列表
 userRouter.post('/list',verifyAuth,getUserList)
+
+userRouter.get("/list",verifyAuth,geAllUserList)
 
 // 删除某个用户
 userRouter.delete('/:id',verifyAuth,deleteUser)

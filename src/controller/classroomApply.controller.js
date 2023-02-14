@@ -45,7 +45,7 @@ class GoodsApplyController {
   // 删除申请单
   async deleteClassroomApply(ctx, next) {
     const { id } = ctx.params;
-    const result = await service.deleteClassroomApplyById(id);
+    const result = await service.deleteclassroomApplyById(id);
     if (result!==-1) {
       ctx.body = {code:200,message:'删除申请单单成功',data:result}
     } else {

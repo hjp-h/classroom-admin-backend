@@ -104,6 +104,21 @@ class UserService {
     }
   }
 
+  // 获取所有用户
+  async getAllUserList(){
+    const statement = `SELECT * FROM USER`
+    try {
+      let [result] = await connection.execute(statement)
+      const res = result.map(item => ({
+        value:item.id,
+        label:item.name
+      }))
+      return res
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   // 根据用户名获取用户
   async getUserByName(name) {
     const statement = `SELECT * FROM USER WHERE name = ?`

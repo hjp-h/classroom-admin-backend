@@ -19,6 +19,17 @@ class UserController {
     }
   }
 
+  // 查询所有用户 下拉列表
+  async geAllUserList(ctx,next) {
+    const result = await userService.getAllUserList();
+    // 返回数据
+    if (result === -1) {
+      ctx.body = { data:null, code: 500,message:'服务器错误！'};
+    } else {
+      ctx.body = { data: result, code: 200 }
+    }
+  }
+
   // 创建用户
   async create(ctx, next) {
     // 获取用户请求传递的参数

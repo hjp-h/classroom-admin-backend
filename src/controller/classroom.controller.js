@@ -34,7 +34,7 @@ class GoodsApplyController {
     }
   }
 
-  // 审批
+  // 修改课室
   async update(ctx,next) {
     const { id } = ctx.params;
     const classroom = ctx.request.body;

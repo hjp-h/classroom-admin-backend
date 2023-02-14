@@ -4,9 +4,9 @@ class classroomApplyService {
   // 课室申请创建
   async create(classroomApply,userId) {
     const { name, applyReason,phone,degree,start,end,classroomId,isUrgent } = classroomApply;
-    const statement = 'INSERT INTO classroom_apply (name, apply_reason, phone,degree,start,end,classroom_id,applicant_id,isUrgent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);';
+    const statement = 'INSERT INTO classroom_apply (apply_reason, phone,degree,start,end,classroom_id,applicant_id,isUrgent) VALUES (?, ?, ?, ?, ?, ?, ?, ?);';
     try {
-      const result = await connection.execute(statement, [name, applyReason,phone,degree,start,end,classroomId,userId,isUrgent]);
+      const result = await connection.execute(statement, [applyReason,phone,degree,start,end,classroomId,userId,isUrgent]);
       return result; 
     } catch (e) {
       console.log(e);
@@ -57,18 +57,29 @@ class classroomApplyService {
     if (degree) {
       statement = statement + ` AND degree = '${degree}'`
     }
-    if(start){
-      statement = statement + ` AND start = '${start}'`
-    }
-    if(end){
-      statement = statement + ` AND end = '${end}'`
-    }
+    // if(start){
+    //   statement = statement + ` AND start = '${start}'`
+    // }
+    // if(end){
+    //   statement = statement + ` AND end = '${end}'`
+    // }
     if(classroomId){
       statement = statement + ` AND classroom_id = '${classroomId}'`
     }
     statement = statement + ` LIMIT ${offset},${size};`
     try {
       const [result] = await connection.execute(statement)
+      // 筛选时间范围功能
+      if(start && end){
+        const startTime = new Date(start).getTime();
+        const endTime = new Date(end).getTime();
+        const filterRes = result.filter(item => {
+          const curStartTime = new Date(item.start).getTime()
+          const curEndTime = new Date(item.end).getTime();
+          return curStartTime <= startTime && curEndTime >= endTime
+        })
+        return filterRes
+      }
       return result
     } catch (e) {
       console.log("e", e);
